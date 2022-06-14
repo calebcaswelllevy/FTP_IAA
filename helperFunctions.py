@@ -100,4 +100,3 @@ def extract_data_from_fits_header(file: str, variable_keyword: str, pathway = ".
         variable = header[variable_keyword]
     return variable
 
-
