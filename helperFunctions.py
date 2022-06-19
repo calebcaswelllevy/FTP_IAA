@@ -31,7 +31,7 @@ def get_file_names(ftp: object, folder: str, target: str = '.+-(vis|nir)_[AB].fi
     return files
 
 
-def retrieve(ftp: object, files: list, target_directory: str = "./retrieved_fits_files",
+def retrieve(ftp: object, files: list, target_directory: str = "./retrieved_fits_files/",
              erase_previous_files: bool = False):
     '''
     wrapper function that downloads files in the supplied list.
@@ -79,7 +79,7 @@ def get_file_from_ftp(ftp: object, file_name: str, target_directory: str):
         ftp.retrbinary(f"RETR {file_name}", file.write)
 
 
-def extract_data_from_fits_header(file: str, variable_keyword: str, pathway = "./retrieved_fits_files") -> str:
+def extract_data_from_fits_header(file: str, variable_keyword: str, pathway = "./retrieved_fits_files/") -> str:
     '''
     Returns the value of the variable keyword from the fits header.
 
@@ -96,7 +96,13 @@ def extract_data_from_fits_header(file: str, variable_keyword: str, pathway = ".
     try:
         header = fits.getheader(file)
     except:
-
+        return f'Error: could not access {file}'
+    try:
         variable = header[variable_keyword]
-    return variable
+        return variable
+    except:
+        return None
+        print(f'Error: {variable_keyword} could not be found in {file}')
+
+
 
